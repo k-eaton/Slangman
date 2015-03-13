@@ -13,9 +13,9 @@ class Word < ActiveRecord::Base
       blanks = row.word.gsub(/[a-zA-Z]/,"_")
       p blanks
       p row.word
-      row.definition.gsub!(row.word, blanks)
+      new_definition = row.definition.gsub!(row.word, blanks)
       p row.definition
-      row.save
+      row.update(definition: new_definition)
     end
   end
 
