@@ -1,5 +1,7 @@
 require_relative 'controller'
+require_relative '../../config/application'
 class Stickfigure
+  attr_reader :wrong_guesses
   def initialize()
     @body = <<-FORMAT
 
@@ -99,8 +101,10 @@ end
 
 
 class Hangman
-  def initialize(secret_word)
-    @secret_word = secret_word
+  def initialize(secret_word_object)
+    @secret_word = secret_word_object.word
+    @definition = secret_word_object.definition
+    @example = secret_word_object.example
     @board = []
     @missed_letters = []
     @secret_word.length.times{@board << "_"}
@@ -111,6 +115,12 @@ class Hangman
 
     puts "Guess a letter:"
     letter = gets.chomp
+    if letter.length > 1
+      puts "Invalid input, guess again"
+      guess
+    end
+    replace_board(@secret_word, @board, " ")
+
     if @board.include?(letter) || @missed_letters.include?(letter)
       puts "Guess Again. You already guessed that.."
       guess
@@ -141,9 +151,23 @@ class Hangman
   def play_game
     until @missed_letters.length == 6 || solved?
       guess
+      puts "Hint: #{@definition}" if @stickman.wrong_guesses >= 2
     end
-    puts "Game Over!" if @missed_letters.length == 6
-    puts "You win!" if solved?
+    puts "Game Over!\nWord is: #{@secret_word}" if @missed_letters.length == 6
+    win
+    puts "Use: #{@example}" if solved?
+  end
+
+  def win
+    puts <<-win
+  ____    ____  ______    __    __     ____    __    ____  __  .__   __.  __
+  \\   \\  /   / /  __  \\  |  |  |  |    \\   \\  /  \\  /   / |  | |  \\ |  | |  |
+   \\   \\/   / |  |  |  | |  |  |  |     \\   \\/    \\/   /  |  | |   \\|  | |  |
+    \\_    _/  |  |  |  | |  |  |  |      \\            /   |  | |  . `  | |  |
+      |  |    |  `--'  | |  `--'  |       \\    /\\    /    |  | |  |\\   | |__|
+      |__|     \\______/   \\______/         \\__/  \\__/     |__| |__| \\__| (__)
+
+    win
   end
 
   def display_board
@@ -157,6 +181,19 @@ class Hangman
 
 end
 
+class Word
+  attr_reader :word, :definition, :example
+  def initialize(args)
+    @word = args[:word]
+    @definition = args[:definition]
+    @example = args[:example]
+  end
+end
 
-test_game = Hangman.new("coolbeans")
+# word = "dat ass doe"
+# definition = "\nThat ass though.A woman can be an idiot, or have ..."
+# example = "\n\"Dat hoe has got an ugly face, but dat ass doe\"Fr..."
+sampled_word = Word.all.sample
+word = Word.new(sampled_word)
+test_game = Hangman.new(word)
 test_game.play_game

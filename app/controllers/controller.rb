@@ -1,10 +1,11 @@
 require 'nokogiri'
 require 'open-uri'
 class Controller
-  def initialize(arg)
-    @model = arg.fetch(:model) #Word
-    @collection = arg.fetch(:collection).first #List
-    @view = arg.fetch(:view).new
+  def initialize
+    # (arg)
+    # @model = arg.fetch(:model) #Word
+    # @collection = arg.fetch(:collection).first #List
+    # @view = arg.fetch(:view).new
     # @nokogiri_doc = Nokogiri::HTML(open("http://www.urbandictionary.com"))
   end
 
@@ -25,6 +26,7 @@ class Controller
   end
 end
 
+
 # class Word
 #   def initialize(args)
 #     @word = args.fetch(:word)
@@ -34,4 +36,3 @@ end
 # end
 
 # controller = Controller.new
-# p controller.grab_info
