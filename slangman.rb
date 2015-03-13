@@ -1,9 +1,15 @@
 require_relative 'config/application'
+require_relative 'app/models/list'
+require_relative 'app/models/word'
+require_relative 'app/controllers/controller'
+require_relative 'app/controllers/gamecontroller'
+require_relative 'app/views/view'
 
-controller = Controller.New ({
-  :model => Task,
+
+controller = Controller.new(
+  :model => Word,
   :collection => List,
   :view => View,
-  :command => ARGV[0] ? ARGV[0] : nil,
-  :task_data => ARGV[1...-1] ? ARGV[1] : nil
-  })
+  )
+
+# controller.grab_info
