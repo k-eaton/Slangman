@@ -5,18 +5,14 @@ class Controller
     @model = arg.fetch(:model) #Word
     @collection = arg.fetch(:collection).first #List
     @view = arg.fetch(:view).new
-    @nokogiri_doc
-    parse
-  end
-
-  def parse
-    @nokogiri_doc = Nokogiri::HTML(open("http://www.urbandictionary.com"))
+    # @nokogiri_doc = Nokogiri::HTML(open("http://www.urbandictionary.com"))
   end
 
   def self.grab_info
-    words = @nokogiri_doc.search('.def-header > a:first-child').map{|word| word.inner_text}
-    definitions = @nokogiri_doc.search('.meaning').map{|definition| definition.inner_text}
-    examples = @nokogiri_doc.search('.example').map{|example| example.inner_text}
+    noko = Nokogiri::HTML(open("http://www.urbandictionary.com"))
+    words = noko.search('.def-header > a:first-child').map{|word| word.inner_text}
+    definitions = noko.search('.meaning').map{|definition| definition.inner_text}
+    examples = noko.search('.example').map{|example| example.inner_text}
     info_array = words.zip(definitions,examples)
     info_array.each_with_object(arr_of_hs = []) do |array|
         h = {}
