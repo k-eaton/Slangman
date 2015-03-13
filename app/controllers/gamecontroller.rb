@@ -1,4 +1,5 @@
 require_relative 'controller'
+require_relative '../../config/application'
 class Stickfigure
   attr_reader :wrong_guesses
   def initialize()
@@ -114,6 +115,12 @@ class Hangman
 
     puts "Guess a letter:"
     letter = gets.chomp
+    if letter.length > 1
+      puts "Invalid input, guess again"
+      guess
+    end
+    replace_board(@secret_word, @board, " ")
+
     if @board.include?(letter) || @missed_letters.include?(letter)
       puts "Guess Again. You already guessed that.."
       guess
@@ -144,10 +151,23 @@ class Hangman
   def play_game
     until @missed_letters.length == 6 || solved?
       guess
-      puts "Hint: #{@definition}" if @stickman.wrong_guesses == 5
+      puts "Hint: #{@definition}" if @stickman.wrong_guesses >= 2
     end
-    puts "Game Over!" if @missed_letters.length == 6
-    puts "You win!\nUse: #{@example}" if solved?
+    puts "Game Over!\nWord is: #{@secret_word}" if @missed_letters.length == 6
+    win
+    puts "Use: #{@example}" if solved?
+  end
+
+  def win
+    puts <<-win
+  ____    ____  ______    __    __     ____    __    ____  __  .__   __.  __
+  \\   \\  /   / /  __  \\  |  |  |  |    \\   \\  /  \\  /   / |  | |  \\ |  | |  |
+   \\   \\/   / |  |  |  | |  |  |  |     \\   \\/    \\/   /  |  | |   \\|  | |  |
+    \\_    _/  |  |  |  | |  |  |  |      \\            /   |  | |  . `  | |  |
+      |  |    |  `--'  | |  `--'  |       \\    /\\    /    |  | |  |\\   | |__|
+      |__|     \\______/   \\______/         \\__/  \\__/     |__| |__| \\__| (__)
+
+    win
   end
 
   def display_board
@@ -173,7 +193,7 @@ end
 # word = "dat ass doe"
 # definition = "\nThat ass though.A woman can be an idiot, or have ..."
 # example = "\n\"Dat hoe has got an ugly face, but dat ass doe\"Fr..."
-
-word = Word.new({:word=>"feeling you", :definition=>"\nCrushing on one person.\n", :example=>"\nListen, I've been feeling you since we met.\n"})
+sampled_word = Word.all.sample
+word = Word.new(sampled_word)
 test_game = Hangman.new(word)
 test_game.play_game
