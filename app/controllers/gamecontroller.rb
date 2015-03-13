@@ -1,5 +1,6 @@
 require_relative 'controller'
 class Stickfigure
+  attr_reader :wrong_guesses
   def initialize()
     @body = <<-FORMAT
 
@@ -99,8 +100,10 @@ end
 
 
 class Hangman
-  def initialize(secret_word)
-    @secret_word = secret_word
+  def initialize(secret_word_object)
+    @secret_word = secret_word_object.word
+    @definition = secret_word_object.definition
+    @example = secret_word_object.example
     @board = []
     @missed_letters = []
     @secret_word.length.times{@board << "_"}
@@ -141,9 +144,10 @@ class Hangman
   def play_game
     until @missed_letters.length == 6 || solved?
       guess
+      puts "Hint: #{@definition}" if @stickman.wrong_guesses == 5
     end
     puts "Game Over!" if @missed_letters.length == 6
-    puts "You win!" if solved?
+    puts "You win!\nUse: #{@example}" if solved?
   end
 
   def display_board
@@ -157,6 +161,19 @@ class Hangman
 
 end
 
+class Word
+  attr_reader :word, :definition, :example
+  def initialize(args)
+    @word = args[:word]
+    @definition = args[:definition]
+    @example = args[:example]
+  end
+end
 
-test_game = Hangman.new("coolbeans")
+# word = "dat ass doe"
+# definition = "\nThat ass though.A woman can be an idiot, or have ..."
+# example = "\n\"Dat hoe has got an ugly face, but dat ass doe\"Fr..."
+
+word = Word.new({:word=>"feeling you", :definition=>"\nCrushing on one person.\n", :example=>"\nListen, I've been feeling you since we met.\n"})
+test_game = Hangman.new(word)
 test_game.play_game
