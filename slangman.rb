@@ -12,4 +12,8 @@ controller = Controller.new(
   :view => View,
   )
 
-# controller.grab_info
+
+sampled_word = Word.all.sample
+word = Word.new(sampled_word)
+test_game = Hangman.new(word)
+test_game.play_game

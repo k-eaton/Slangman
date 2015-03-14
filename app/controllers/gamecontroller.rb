@@ -148,14 +148,32 @@ class Hangman
   end
 
   def play_game
+    welcome
     until @missed_letters.length == 6 || solved?
       guess
-      puts "Hint: #{@definition}" if @stickman.wrong_guesses >= 2
+      puts "Here's a hint: #{@definition}" if @stickman.wrong_guesses >= 2
     end
-    puts "Game Over!\nWord is: #{@secret_word}" if @missed_letters.length == 6
+    puts "Game Over!\nWord/Phrase is: #{@secret_word}" if @missed_letters.length == 6
     win if solved?
-    puts "Use: #{@example}" if solved?
+    puts "The phrase used in a sentence: #{@example}" if solved?
   end
+
+
+  def welcome
+    puts <<-Welcome
+ __        __   _                            _          ____  _                                         _
+ \\ \\      / /__| | ___ ___  _ __ ___   ___  | |_ ___   / ___|| | __ _ _ __   __ _ _ __ ___   __ _ _ __ | |
+  \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\ | __/ _ \\  \\___ \\| |/ _` | '_ \\ / _` | '_ ` _ \\ / _` | '_ \\| |
+   \\ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |  ___) | | (_| | | | | (_| | | | | | | (_| | | | |_|
+    \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|  \\__\\___/  |____/|_|\\__,_|_| |_|\\__, |_| |_| |_|\\__,_|_| |_(_)
+                                                                            |___/
+   This is a Hangman game created by: Katarina Eaton, Mike Perez, Joyce De La Torre, and Kevin Ceballos. Words are obtained
+   by scraping the UrbanDictionary frontpage for recent "Word of the Day"s. Have fun!
+   Let's Begin!
+
+  Welcome
+  end
+
 
   def win
     puts <<-win
@@ -192,7 +210,4 @@ end
 # word = "dat ass doe"
 # definition = "\nThat ass though.A woman can be an idiot, or have ..."
 # example = "\n\"Dat hoe has got an ugly face, but dat ass doe\"Fr..."
-sampled_word = Word.all.sample
-word = Word.new(sampled_word)
-test_game = Hangman.new(word)
-test_game.play_game
+
