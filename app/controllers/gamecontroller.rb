@@ -112,16 +112,15 @@ class Hangman
   end
 
   def guess
-
+    replace_board(@secret_word, @board, " ")
     puts "Guess a letter:"
     letter = gets.chomp
+
     if letter.length > 1
       puts "Invalid input, guess again"
       guess
-    end
-    replace_board(@secret_word, @board, " ")
 
-    if @board.include?(letter) || @missed_letters.include?(letter)
+    elsif @board.include?(letter) || @missed_letters.include?(letter)
       puts "Guess Again. You already guessed that.."
       guess
     elsif @secret_word.split("").include?(letter)
@@ -154,7 +153,7 @@ class Hangman
       puts "Hint: #{@definition}" if @stickman.wrong_guesses >= 2
     end
     puts "Game Over!\nWord is: #{@secret_word}" if @missed_letters.length == 6
-    win
+    win if solved?
     puts "Use: #{@example}" if solved?
   end
 
