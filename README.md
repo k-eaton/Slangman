@@ -6,6 +6,6 @@ A DBC group project.
 ![Slangman_Image](./Slangman_SS.png)
 
 #### Technologies used:
-⋅⋅* Ruby
-⋅⋅* ActiveRecord
-⋅⋅* Nokogiri
+* Ruby
+* ActiveRecord
+* Nokogiri
