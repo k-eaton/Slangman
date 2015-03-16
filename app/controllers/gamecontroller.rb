@@ -185,6 +185,7 @@ class Hangman
       |__|     \\______/   \\______/         \\__/  \\__/     |__| |__| \\__| (__)
 
     win
+    %x[say "congratulations! You have won! The phrase was #{@secret_word}"]
   end
 
   def display_board
