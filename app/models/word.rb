@@ -4,8 +4,8 @@ class Word < ActiveRecord::Base
 
   validates :word, :definition, :example, { :presence => true }
   validates :word, { :uniqueness => true }
-  validates :word, format: { with: /.{5,}/ }
-  validates :word, format: { without: /[A-Z]{2,}/ }
+  # validates :word, format: { with: /.{5,}/ }
+  # validates :word, format: { without: /[A-Z]{3,}/ }
   # validates :word, format: { without: /\D*\d\D*/ }
 
   def self.remove_word_from_definition

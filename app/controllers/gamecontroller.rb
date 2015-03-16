@@ -134,7 +134,7 @@ class Hangman
     end
     @stickman.display_hangman
     display_board
-    puts "Missed letters: #{@missed_letters}"
+    puts "Missed letters: #{@missed_letters.join(", ")}"
   end
 
   def replace_board(word, board, letter)
@@ -188,7 +188,7 @@ class Hangman
   end
 
   def display_board
-    puts  "Mystery Word: #{@board}"
+    puts  "Mystery Word: #{@board.join(" ")}"
   end
 
   def solved?
@@ -198,14 +198,6 @@ class Hangman
 
 end
 
-class Word
-  attr_reader :word, :definition, :example
-  def initialize(args)
-    @word = args[:word]
-    @definition = args[:definition]
-    @example = args[:example]
-  end
-end
 
 # word = "dat ass doe"
 # definition = "\nThat ass though.A woman can be an idiot, or have ..."
